@@ -2,7 +2,10 @@
 
 # get current branch and push
 current_branch=$(git branch | sed -n -e 's/^\* \(.*\)/\1/p')
-
+case "$branch" in
+'('?*')') echo not on any branch ;;
+*) echo on branch $branch ;;
+esac
 # git pull
 git pull origin "$current_branch"
 echo "====pull changes from '$current_branch' branch"
