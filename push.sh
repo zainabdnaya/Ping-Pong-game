@@ -6,6 +6,9 @@ case "$branch" in
 '('?*')') echo not on any branch ;;
 *) echo on branch $branch ;;
 esac
+#esac statement is to give an expression to evaluate and to execute several different statements based on the value of the expression. The interpreter checks each case against the value of the expression until a match is found. 
+#If nothing matches, a default condition will be used.
+
 # git pull
 git pull origin "$current_branch"
 echo "====pull changes from '$current_branch' branch"
