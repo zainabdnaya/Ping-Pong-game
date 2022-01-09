@@ -1,6 +1,7 @@
 #!/bin/bash
 
 # get current branch and push
+#
 current_branch=$(git branch | sed -n -e 's/^\* \(.*\)/\1/p')
 case "$branch" in
 '('?*')') echo not on any branch ;;
