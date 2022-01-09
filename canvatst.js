@@ -188,10 +188,16 @@ function draw() {
     y += dy;
     collisionDetection();
     if (score_right == 5 || score_left == 5) {
+        if ( score_right == 5) {
+            alert("Player  in lef wins");
+        }
+        else {
+            alert("Player  in right wins");
+        }
         score_right = 0;
         score_left = 0;
-        alert("Game Over");
-        // canvas.focus();
+
+        draw();
     }
 }
 
