@@ -12,9 +12,9 @@ var ctx = canvas.getContext("2d");
 
 var x = canvas.width / 2;
 var y = canvas.height - 30;
-var dx = 1;
-var dy = -1;
-var r = 10;
+var dx = 0.5;
+var dy = -0.5;
+var r = 5;
 var ballRadius = 10;
 var paddleWidth = 10;
 var paddleHeight = 80;
@@ -26,6 +26,8 @@ var paddleY_right = (canvas.height - paddleHeight) / 2;
 var paddleY_left = (canvas.height - paddleHeight) / 2;
 var paddle_rX = canvas.width - 20;
 var paddle_lX = 20;
+var score_left = 0;
+var score_right = 0;
 
 document.addEventListener("keydown", keyDownHandler, false);
 document.addEventListener("keyup", keyUpHandler, false);
@@ -63,105 +65,106 @@ function draw_padle_Right() {
     ctx.fill();
     ctx.closePath();
 }
+var uppress1 = false;
+var downpress1 = false;
 
 function keyDownHandler(e) {
-    if (e.key == "w" || e.key == "ArrowUp") {
+    if (e.key == "ArrowUp" || e.key == "Up") {
         uppress = true;
-        if (e.key == "ArrowUp") {
-            paddleY_left -= 15;
-
-            if (paddleY_left + paddleHeight > canvas.height) {
-                paddleY_left = canvas.height - paddleHeight;
-            }
-        }
-        else {
-            paddleY_right -= 15;
-
-            if (paddleY_right + paddleHeight > canvas.height) {
-                paddleY_right = canvas.height - paddleHeight;
-            }
-        }
     }
-    else if (e.key == "s" || e.key == "ArrowDown") {
+    if (e.key == "w" || e.key == "KeyW") {
+        uppress1 = true;
+    }
+    if (e.key == "ArrowDown" || e.key == "Down") {
         downpress = true;
-        if (e.key == "ArrowDown") {
-            paddleY_left += 15;
-            if (paddleY_left < 0) {
-                paddleY_left = 0;
-            }
-        }
-        else {
-            paddleY_right += 15;
-            if (paddleY_right < 0) {
-                paddleY_right = 0;
-            }
-        }
+    }
+    if (e.key == "s" || e.key == "KeyS") {
+        downpress1 = true;
     }
 }
 
 function keyUpHandler(e) {
-    if (uppress) {
+
+    if (e.key == "ArrowUp" || e.key == "Up") {
         uppress = false;
     }
-    else if (downpress) {
+    if (e.key == "w" || e.key == "KeyW") {
+        uppress1 = false;
+    }
+    if (e.key == "ArrowDown" || e.key == "Down") {
         downpress = false;
     }
+    if (e.key == "s" || e.key == "KeyS") {
+        downpress1 = false;
+    }
 }
-var speed = 1;
-var score_left = 0;
-var score_right = 0;
 
+function keyhook() {
+    if (uppress) {
+        paddleY_left -= 1;
+        if (paddleY_left < 0) {
+            paddleY_left = 0;
+        }
+    }
+     if (uppress1) {
+        paddleY_right -= 1;
+        if (paddleY_right < 0) {
+            paddleY_right = 0;
+        }
+    }
+     if (downpress) {
+        paddleY_left += 1;
+        if (paddleY_left + paddleHeight > canvas.height ) {
+            paddleY_left = canvas.height - paddleHeight;
+        }
+    }
+     if (downpress1) {
+        paddleY_right += 1;
+        if (paddleY_right + paddleHeight > canvas.height ) {
+            paddleY_right = canvas.height - paddleHeight;
+        }
+    }
+}
 
-function collisionDetection() 
-{
-    for (var i = 0; i < 2; i++) {
-        var paddle_left = paddle_lX;
-        var paddle_right = paddle_rX;
-        var paddle_top = paddleY_left;
-        var paddle_bottom = paddleY_left + paddleHeight;
-        var ball_left = x - ballRadius;
-        var ball_right = x + ballRadius;
-        var ball_top = y - ballRadius;
-        var ball_bottom = y + ballRadius;
-        var paddle_left_right = paddle_left + paddleWidth;
-        var paddle_right_left = paddle_right - paddleWidth;
-        var paddle_top_bottom = paddle_top + paddleHeight;
-        var paddle_bottom_top = paddle_bottom - paddleHeight;
+function collisionDetection() {
+    if (y + dy < ballRadius) { //ball hits the top
+        dy = -dy;
+    }
+    else if (y + dy > canvas.height - ballRadius) { //ball hits the bottom
+        dy = -dy;
+    }
 
-        if (i == 0) {
-            if (ball_left <= paddle_left_right && ball_right >= paddle_left && ball_bottom >= paddle_top && ball_top <= paddle_bottom) {
-                dx = -dx;
-                x = paddle_left_right + ballRadius;
-            }
+    // ball hits rihgt paddle
+    if (x + dx > canvas.width - ballRadius - paddleWidth) {
+        if (y > paddleY_right && y < paddleY_right + paddleHeight) {
+            dx = -dx;
         }
         else {
-            if (ball_left <= paddle_right_left && ball_right >= paddle_right && ball_bottom >= paddle_top && ball_top <= paddle_bottom) {
-                dx = -dx;
-                x = paddle_right_left - ballRadius;
-            }
+            score_right += 1;
+            x = canvas.width / 2;
+            y = canvas.height - paddleHeight;
+            dx = 1;
+            dy = -1;
+            paddleY_left = (canvas.height - paddleHeight) / 2;
+            paddleY_right = (canvas.height - paddleHeight) / 2;
         }
     }
-    if (y + dy < ballRadius) {
-        dy = -dy;
+    // balls hits left paddle
+    if (x + dx < ballRadius + paddleWidth) {
+        if (y > paddleY_left && y < paddleY_left + paddleHeight) {
+            dx = -dx;
+        }
+        else {
+            score_left += 1;
+            x = canvas.width / 2;
+            y = canvas.height - paddleHeight;
+            dx = -1;
+            dy = -1;
+            paddleY_left = (canvas.height - paddleHeight) / 2;
+            paddleY_right = (canvas.height - paddleHeight) / 2;
+        }
     }
-    else if (y + dy > canvas.height - ballRadius) {
-        dy = -dy;
-    }
-    if (x + dx < ballRadius) {
-        score_right++;
-        x = canvas.width / 2;
-        y = canvas.height - 30;
-        dx = 1;
-        dy = -1;
-    }
-    else if (x + dx > canvas.width - ballRadius) {
-        score_left++;
-        x = canvas.width / 2;
-        y = canvas.height - 30;
-        dx = -1;
-        dy = -1;
-    }
-    x
+
 }
 
 function score_record() {
@@ -179,26 +182,26 @@ function score_record() {
 
 function draw() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
+    drawBall();
     draw_center_line();
     draw_padle_Left();
     draw_padle_Right();
-    score_record();
-    drawBall();
-    x += dx;
-    y += dy;
     collisionDetection();
-    if (score_right == 5 || score_left == 5) {
-        if ( score_right == 5) {
-            alert("Player  in lef wins");
-        }
-        else {
-            alert("Player  in right wins");
-        }
+    score_record();
+    if (score_right == 10) {
+        alert("Player  in left wins");
         score_right = 0;
         score_left = 0;
-
-        draw();
     }
+    else if (score_left == 10) {
+        alert("Player  in right wins");
+        score_right = 0;
+        score_left = 0;
+    }
+    keyhook();
+    x += dx;
+    y += dy;
 }
+var speed = 1;
 
 setInterval(draw, speed);
