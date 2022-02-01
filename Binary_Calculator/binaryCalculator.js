@@ -9,44 +9,41 @@ let btnMul = document.getElementById("btnMul");
 let btnDiv = document.getElementById("btnDiv");
 
 
-
-
-//this function to khnow if any of operations are vlivked
-
-function witch_op() {
-    if (document.getElementById('btnSum').clicked == true)
-        return ('+');
-    if (document.getElementById('btnSub').clicked == true)
-        return ('-');
-
-    if (document.getElementById('btnMul').clicked == true)
-        return ('*');
-
-    if (document.getElementById('btnDiv').clicked == true)
-        return ('/');
-}
-
 var num1 = "";
 var num2 = "";
 var tmp;
 var op = false;
 
+
 btn0.addEventListener('click', event => {
+
+    res.innerText += '0';
+    console.log(event);
     if (op == false) {
         num1 += "0";
 
     }
-    else
+    else {
         num2 += "0";
+        // res.innerText = num2;
+
+    }
 }
 );
 
 btn1.addEventListener('click', event => {
-    if (op == false) {
+    res.innerText += '1';
+    if (op == false)
+    {
+
         num1 += "1";
+        // res.innerText = num1;
     }
-    else {
+    else 
+    {
         num2 += "1";
+        // res.innerText = num2;
+
     }
 }
 );
@@ -54,33 +51,38 @@ btn1.addEventListener('click', event => {
 var char_op;
 
 btnSum.addEventListener('click', event => {
-    console.log(" you press a plus");
     op = true;
     char_op = '+';
+    res.innerText += char_op;
+
+
 }
 );
 
 btnSub.addEventListener('click', event => {
-    console.log(" you press a sub");
     op = true;
     char_op = '-';
+    res.innerText += char_op;
 
 }
 );
 
 btnMul.addEventListener('click', event => {
-    console.log(" you press a multiplication");
+
     op = true;
     char_op = '*';
+    res.innerText += char_op;
+
 
 }
 );
 
 
 btnDiv.addEventListener('click', event => {
-    console.log(" you press a div");
     op = true;
     char_op = '/';
+    res.innerText += char_op;
+
 
 }
 );
@@ -88,31 +90,46 @@ btnDiv.addEventListener('click', event => {
 
 
 var reslt = "";
+
 btnEql.addEventListener('click', event => {
-    console.log(" you press a eql");
-    if (op == true) {
+    res.innerText = "";
+     if (op == true) {
         if (char_op == '+') {
-            reslt = parseInt(num1, 2) + parseInt(num2, 2);
+            reslt = (parseInt(num1, 2)) + (parseInt(num2, 2));
 
             res.innerText = (reslt.toString(2));
         }
         else if (char_op == '-') {
-            reslt = parseInt(num1, 2) - parseInt(num2, 2);
-            // console.log("==>" + parseInt(reslt));
+            reslt = (parseInt(num1, 2)) - (parseInt(num2, 2));
             if (parseInt(reslt) < 0)
                 res.innerText = ((parseInt(reslt) >>> 0).toString(2));
             else
                 res.innerText = (reslt.toString(2));
         }
         else if (char_op == '*') {
-            reslt = parseInt(num1, 2) * parseInt(num2, 2);
+            reslt = (parseInt(num1, 2)) * (parseInt(num2, 2));
 
             res.innerText = (reslt.toString(2));
         }
         else if (char_op == '/') {
-            reslt = parseInt(num1, 2) / parseInt(num2, 2);
+            reslt = (parseInt(num1, 2)) / (parseInt(num2, 2));
             res.innerText = (reslt.toString(2));
         }
+
+        // console.log(" you press a clear");
+        // console.log("=> num1 \t" + num1);
+        // console.log("=> num2 \t" + num2);
+        // console.log("num 1 = " + parseInt(num1, 2));
+        // console.log("num 2 = " + parseInt(num2, 2));
+        // console.log("result = " + reslt);
+        // console.log("result in binary = " + reslt.toString(2));
+
+
+
+        num1 = "";
+        num2 = "";
+        reslt = "";
+        char_op = "";
     }
     else {
         alert("Wrong syntax :=> a ( -  or + or / or * ) b ")
@@ -123,14 +140,6 @@ btnEql.addEventListener('click', event => {
 
 btnClr.addEventListener('click', event => {
 
-    // console.log(" you press a clear");
-    // console.log("=> num1 \t" + num1);
-    // console.log("=> num2 \t" + num2);
-    // console.log("num 1 = " + parseInt(num1, 2));
-    // console.log("num 2 = " + parseInt(num2, 2));
-    // console.log("result = " + reslt);
-    // console.log("result in binary = " + reslt.toString(2));
-
-    res.innerText =  "";
+    res.innerText = "";
 }
 );
