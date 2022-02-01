@@ -37,10 +37,13 @@ function witch_op() {
 let num1 = 0;
 let num2 = 0;
 let tmp;
-let op;
+let op = false;
 
 btn0.addEventListener('click', event => {
-    console.log(" you press a zero ");
+    if (op == false)
+        console.log(" you press a zero  num1");
+    else
+        console.log("num2");
 }
 );
 
@@ -52,22 +55,29 @@ btn1.addEventListener('click', event => {
 
 btnSum.addEventListener('click', event => {
     console.log(" you press a plus");
+    op = true;
 }
 );
 
 btnSub.addEventListener('click', event => {
     console.log(" you press a sub");
+    op = true;
+
 }
 );
 
 btnMul.addEventListener('click', event => {
     console.log(" you press a multiplication");
+    op = true;
+
 }
 );
 
 
 btnDiv.addEventListener('click', event => {
     console.log(" you press a div");
+    op = true;
+
 }
 );
 
