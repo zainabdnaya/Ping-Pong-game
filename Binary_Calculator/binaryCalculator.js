@@ -10,6 +10,7 @@ let btnDiv = document.getElementById("btnDiv");
 
 
 
+
 //this function to khnow if any of operations are vlivked
 
 
@@ -31,34 +32,54 @@ function witch_op() {
 
     if (document.getElementById('btnDiv').clicked == true)
         return ('/');
-
-    else
-        alert("not valid op")
 }
 
 let num1 = 0;
 let num2 = 0;
+let tmp;
 let op;
-if (op_clicked == false && document.getElementById('btn0').clicked == true) {
-    num1 = '${num1}${0}';
+
+btn0.addEventListener('click', event => {
+    console.log(" you press a zero ");
 }
+);
 
-if (op_clicked == false && document.getElementById('btn1').clicked == true) {
-    num1 = '${num1}${1}';
+btn1.addEventListener('click', event => {
+    console.log(" you press a one");
 }
+);
 
-else if (op_clicked == true) {
-    if (document.getElementById('btn0').clicked == true) {
-        num2 = '${num2}${0}';
-    }
 
-    if (document.getElementById('btn1').clicked == true) {
-        num2 = '${num2}${1}';
-    }
-
+btnSum.addEventListener('click', event => {
+    console.log(" you press a plus");
 }
+);
+
+btnSub.addEventListener('click', event => {
+    console.log(" you press a sub");
+}
+);
+
+btnMul.addEventListener('click', event => {
+    console.log(" you press a multiplication");
+}
+);
 
 
-// if equa is clicked 
+btnDiv.addEventListener('click', event => {
+    console.log(" you press a div");
+}
+);
 
-function operate(num1, num2,)
+
+
+btnEql.addEventListener('click', event => {
+    console.log(" you press a eql");
+}
+);
+
+
+btnClr.addEventListener('click', event => {
+    console.log(" you press a clear");
+}
+);

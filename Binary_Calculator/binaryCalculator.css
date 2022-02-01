@@ -1,11 +1,10 @@
 #body{
     width: 33%;
-    /* border: solid; */
 }
 
 #res
 {
-    /* width : 740px; */
+    width : 100%;
     height: 48px;
     background-color : lightgray;
     border : solid;
