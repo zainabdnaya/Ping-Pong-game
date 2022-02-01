@@ -87,31 +87,31 @@ btnDiv.addEventListener('click', event => {
 
 
 
-var reslt="";
+var reslt = "";
 btnEql.addEventListener('click', event => {
     console.log(" you press a eql");
     if (op == true) {
         if (char_op == '+') {
             reslt = parseInt(num1, 2) + parseInt(num2, 2);
 
-            return (reslt.toString(2));
+            res.innerText = (reslt.toString(2));
         }
         else if (char_op == '-') {
             reslt = parseInt(num1, 2) - parseInt(num2, 2);
-            console.log(  "==>" + parseInt(reslt));
+            // console.log("==>" + parseInt(reslt));
             if (parseInt(reslt) < 0)
-                return ((parseInt(reslt)    >>> 0).toString(2));
+                res.innerText = ((parseInt(reslt) >>> 0).toString(2));
             else
-                return (reslt.toString(2));
+                res.innerText = (reslt.toString(2));
         }
         else if (char_op == '*') {
             reslt = parseInt(num1, 2) * parseInt(num2, 2);
 
-            return (reslt.toString(2));
+            res.innerText = (reslt.toString(2));
         }
         else if (char_op == '/') {
             reslt = parseInt(num1, 2) / parseInt(num2, 2);
-            return (reslt.toString(2));
+            res.innerText = (reslt.toString(2));
         }
     }
     else {
@@ -122,12 +122,15 @@ btnEql.addEventListener('click', event => {
 
 
 btnClr.addEventListener('click', event => {
-    console.log(" you press a clear");
-    console.log("=> num1 \t" + num1);
-    console.log("=> num2 \t" + num2);
-    console.log("num 1 = " + parseInt(num1, 2));
-    console.log("num 2 = " + parseInt(num2, 2));
-    console.log("result = " + reslt);
-    console.log("result in binary = " + reslt.toString(2));
+
+    // console.log(" you press a clear");
+    // console.log("=> num1 \t" + num1);
+    // console.log("=> num2 \t" + num2);
+    // console.log("num 1 = " + parseInt(num1, 2));
+    // console.log("num 2 = " + parseInt(num2, 2));
+    // console.log("result = " + reslt);
+    // console.log("result in binary = " + reslt.toString(2));
+
+    res.innerText =  "";
 }
 );
