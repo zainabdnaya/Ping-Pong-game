@@ -6,3 +6,6 @@ export class AppService {
     return 'Hello World!';
   }
 }
+
+
+// basuc service with single methose 

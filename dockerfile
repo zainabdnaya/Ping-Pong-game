@@ -32,12 +32,14 @@ RUN npm install  -g @nestjs/cli
 
 RUN apt install git
 
+RUN apt install zsh -y
+
+ENTRYPOINT sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+
+
 RUN git clone https://github.com/zainabdnaya/Ping-Pong-game.git 
 
 
 
 # RUN npm install
 
-RUN apt install zsh -y
-
-ENTRYPOINT sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
