@@ -43,5 +43,4 @@ export class AppGateway implements OnGatewayInit, OnGatewayConnection , OnGatewa
   {
     this.wss.emit('msgToClient',text);
   }
-
 }

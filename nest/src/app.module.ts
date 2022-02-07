@@ -7,6 +7,4 @@ import { AppGateway } from './app.gateway';
   providers: [AppGateway],
 })
 export class AppModule {}
-
-
 //root module of the app

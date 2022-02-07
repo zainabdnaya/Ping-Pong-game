@@ -12,7 +12,4 @@ async function bootstrap() {
 }
 bootstrap();
 
-
-
-
 // entry file 
