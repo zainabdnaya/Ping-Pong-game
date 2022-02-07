@@ -1,3 +1,16 @@
+<p align="center">
+  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo_text.svg" width="320" alt="Nest Logo" /></a>
+</p>
+
+
+
+<p align="center">
+  <a href="https://reactnative.dev/" target="blank"><img src="https://reactjs.org/logo-og.png" width="320" alt="React Logo" /></a>
+</p>
+
+
+
+
 # Ping-Pong-game
 the Aim of this project to get familiar with Canvas and it's tools , a simple implementation of ping pong game 1972
 
@@ -17,3 +30,6 @@ the Aim of this project to get familiar with Canvas and it's tools , a simple im
    
    
    <a href="https://www.youtube.com/watch?v=0zyYhm5MjJ4&t=420s">NestJs webSocket</a>
+
+
+
