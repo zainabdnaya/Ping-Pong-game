@@ -6,9 +6,9 @@ import {join} from 'path';
 async function bootstrap() {
 
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
-  app.useStaticAssets(join(__dirname , '..' ,'static'));
-  // app.enableCors('localhost:3001');
-  await app.listen(3000);
+  //When you use useStaticAssets you don't need to set up a controller, all your files will be served automatically
+  app.useStaticAssets(join(__dirname , '..' ,'_test'));
+  await app.listen(3005);
 }
 bootstrap();
 

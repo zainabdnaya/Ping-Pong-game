@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <title>Test </title>
+</head>
+
+<body>
+    <div id="v-app">
+
+        <h1>{{ title }}</h1>
+        <form>
+            <input type="text" v-model="text" placeholder="Enter your message"/>
+            <button type="submit" @click.prevent='sendmsg()'>Send</button>
+        </form>
+        <p>
+        <ul>
+            <li v-for="msg in messages"> {{ msg }} </li>
+        </ul>
+        </p>
+    </div>
+    <script>
+        var app = new Vue({
+            el: '#v-app',
+            data: {
+                title: 'Chat Room',
+                text: '',
+                messages: ['some messages', 'Another messages'],
+                socket :null,
+            },
+            methods: {
+                sendmsg()
+                {
+                    console.log(`send: ${this.text}`);
+                    this.socket.emit('msgToServer', this.text); // push a mesage to the array
+                    this.text = "";
+                    
+                },
+                receiveMessage(msg)
+                {
+                    console.log(`receive: ${msg}`);
+                    this.messages.push(msg);
+                }
+            },
+            created()
+            {
+                this.socket = io('http://localhost:3005');
+                this.socket.on('msgToClient', (msg) =>{
+                    this.receiveMessage(msg);
+                });
+            }
+        });
+
+    </script>
+</body>
+
+
+</html>
