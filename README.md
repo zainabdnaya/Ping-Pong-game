@@ -10,3 +10,10 @@ the Aim of this project to get familiar with Canvas and it's tools , a simple im
     var canvas = document.getElementById("myCanvas");
     getcontext The getContext() function returns the drawing context - which is an object that has all the drawing properties and functions you use to draw on the canvas.
     var ctx = canvas.getContext("2d");
+    
+   
+   
+   # Some ressources 
+   
+   
+   <a href="https://www.youtube.com/watch?v=0zyYhm5MjJ4&t=420s">NestJs webSocket</a>
