@@ -1,4 +1,5 @@
 import React, { useRef, useEffect } from 'react'
+import { Socket, io } from 'socket.io-client';
 
 
 class player {
@@ -63,6 +64,21 @@ class player {
     }
     public set _score(value: number) {
         this.score += value;
+    }
+
+    ToJson()
+    {
+        return (
+        {
+            "paddle_x": this.paddle_x,
+            "paddle_y": this.paddle_y,
+            "paddle_width": this.paddle_width,
+            "paddle_height": this.paddle_height,
+            "paddle_speed": this.paddle_speed,
+            "ctx": this.ctx,
+            "color": this.color,
+
+        });
     }
 }
 
@@ -157,6 +173,7 @@ class game {
     _ball: ball;
     // x: number;
     // y: number;
+    socket: Socket;
 
 
     constructor(canvas: HTMLCanvasElement) {
@@ -172,22 +189,36 @@ class game {
         this._ball = new ball(this.ctx, this.canvas.width / 2, this.canvas.height / 2, 8, 2, -2, "red");
         document.addEventListener("keyup", this.keyUpHandler.bind(this), false);
         document.addEventListener("keydown", this.keyDownHandler.bind(this), false);
+        this.socket = io("http://localhost:3080");
+        this.socket.on('msgToClient', (msg) => {
+            // this.paddle_left.score = msg.score;
+            this.paddle_left.paddle_x = msg.paddle_x;
+            this.paddle_left.paddle_y = msg.paddle_y;
+            
+        });
         this.start();
+
     }
 
+    receiveMessage(data: any) {
+        console.log(`receive: ${data}`);
+    }
 
     keyDownHandler(e: KeyboardEvent) {
         if (e.key === "ArrowUp" || e.key === "Up") {
             this.uppress = true;
+
         }
         if (e.key === "w" || e.key === "KeyW") {
             this.uppress1 = true;
+
         }
         if (e.key === "ArrowDown" || e.key === "Down") {
             this.downpress = true;
         }
         if (e.key === "s" || e.key === "KeyS") {
             this.downpress1 = true;
+
         }
     }
 
@@ -213,28 +244,32 @@ class game {
         if (this.uppress === true) {
 
             this.paddle_left.paddle_y -= 4;
+            
             if (this.paddle_left.paddle_y < 0) {
                 this.paddle_left.paddle_y = 0;
             }
+            this.socket.emit('msgToServer', this.paddle_left.ToJson()); // push a mesage to the array
         }
         if (this.uppress1) {
             this.paddle_right.paddle_y -= 4;
+            
             if (this.paddle_right._paddle_y < 0) {
                 this.paddle_right.paddle_y = 0;
             }
         }
         if (this.downpress) {
+            
             this.paddle_left.paddle_y += 4;
             if (this.paddle_left.paddle_y + this.paddle_left._paddle_height > this.canvas.height) {
                 this.paddle_left.paddle_y = this.canvas.height - this.paddle_left._paddle_height;
             }
+            this.socket.emit('msgToServer', this.paddle_left.ToJson()); // push a mesage to the array
         }
         if (this.downpress1) {
+            
             this.paddle_right.paddle_y += 4;
             if (this.paddle_right._paddle_y + this.paddle_right._paddle_height > this.canvas.height) {
                 this.paddle_right.paddle_y = this.canvas.height - this.paddle_right._paddle_height;
-
-                // this.paddle_right._Paddle_y();
             }
         }
     }
