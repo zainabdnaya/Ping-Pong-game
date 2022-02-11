@@ -1,8 +1,8 @@
 import React, { useRef, useEffect } from 'react'
 import { Socket, io } from 'socket.io-client';
+import "./_Game.css"
 
-
-class player {
+export class player {
     score: number;
     paddle_x: number;
     paddle_y: number;
@@ -82,7 +82,7 @@ class player {
     }
 }
 
-class ball {
+export class ball {
     ball_x: number;
     ball_y: number;
     ball_radius: number;
@@ -158,7 +158,9 @@ class ball {
 
 }
 
-class game {
+export class Game {
+
+    
     canvas: HTMLCanvasElement;
     ctx: any;
     paddle_right: player;
@@ -350,12 +352,10 @@ const Canvas = (props: any) => {
         const canvasRef = useRef(null)
 
         useEffect(() => {
-            var g = new game(canvasRef.current as any);
+           new Game(canvasRef.current as any);
         }, []);
-        return <canvas className="canvas" ref={canvasRef}  {...props} width={800} height={400} />
+        return <canvas ref={canvasRef}  {...props} width={800} height={400} />
     }
 }
 
 export default Canvas;
-
-
