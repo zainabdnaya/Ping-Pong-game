@@ -8,5 +8,6 @@ canvas
     border-color: aliceblue;
     border-style: solid;
     border-width: 1px;
+    align-self: center;
     
 }

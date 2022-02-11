@@ -66,19 +66,18 @@ export class player {
         this.score += value;
     }
 
-    ToJson()
-    {
+    ToJson() {
         return (
-        {
-            "paddle_x": this.paddle_x,
-            "paddle_y": this.paddle_y,
-            "paddle_width": this.paddle_width,
-            "paddle_height": this.paddle_height,
-            "paddle_speed": this.paddle_speed,
-            "ctx": this.ctx,
-            "color": this.color,
+            {
+                "paddle_x": this.paddle_x,
+                "paddle_y": this.paddle_y,
+                "paddle_width": this.paddle_width,
+                "paddle_height": this.paddle_height,
+                "paddle_speed": this.paddle_speed,
+                "ctx": this.ctx,
+                "color": this.color,
 
-        });
+            });
     }
 }
 
@@ -160,7 +159,7 @@ export class ball {
 
 export class Game {
 
-    
+
     canvas: HTMLCanvasElement;
     ctx: any;
     paddle_right: player;
@@ -176,14 +175,20 @@ export class Game {
     // x: number;
     // y: number;
     socket: Socket;
+    sender: string;
+    myId : string;
+    player: number;
+    email : string;
 
 
-    constructor(canvas: HTMLCanvasElement) {
+    constructor(canvas: HTMLCanvasElement,date:any) {
         this.canvas = canvas;
         this.ctx = this.canvas.getContext("2d") as CanvasRenderingContext2D;
         this.uppress = false;
         this.downpress = false;
         this.uppress1 = false;
+        this.email = date.Email;
+        console.log(this.email);
         this.downpress1 = false;
         this.paddle_left = new player(0, 10, this.canvas.height / 2, 10, 80, 1, this.ctx, "white");
         this.paddle_right = new player(0, this.canvas.width - 20, (this.canvas.height) / 2, 10, 80, 1, this.ctx, "white");
@@ -192,21 +197,35 @@ export class Game {
         document.addEventListener("keyup", this.keyUpHandler.bind(this), false);
         document.addEventListener("keydown", this.keyDownHandler.bind(this), false);
         this.socket = io("http://localhost:3080");
+       
+        this.sender = "";
+        this.player = 0;
+        this.myId = "";
         this.socket.on('msgToClient', (msg) => {
-            // this.paddle_left.score = msg.score;
-            this.paddle_left.paddle_x = msg.paddle_x;
-            this.paddle_left.paddle_y = msg.paddle_y;
-            
+            // if (msg.email  !== undefined) {
+                // this.sender = msg.email;
+                this.sender = msg.sessionId;
+                this.myId = this.socket.id;
+                // console.log(this.myId);
+            // }
+            if (msg.paddle_x !== undefined ) {
+
+                this.paddle_left.paddle_x = msg.paddle_x;
+                this.paddle_left.paddle_y = msg.paddle_y;
+            }
+            // console.log(msg);
         });
+        this.socket.emit('msgToServer', this.paddle_left.ToJson()); // push a mesage to the array
         this.start();
 
     }
 
     receiveMessage(data: any) {
-        console.log(`receive: ${data}`);
+        // console.log(`receive: ${data}`);
     }
 
-    keyDownHandler(e: KeyboardEvent) {
+    keyDownHandler(e: KeyboardEvent) 
+    {
         if (e.key === "ArrowUp" || e.key === "Up") {
             this.uppress = true;
 
@@ -246,21 +265,22 @@ export class Game {
         if (this.uppress === true) {
 
             this.paddle_left.paddle_y -= 4;
-            
+
             if (this.paddle_left.paddle_y < 0) {
                 this.paddle_left.paddle_y = 0;
             }
+
             this.socket.emit('msgToServer', this.paddle_left.ToJson()); // push a mesage to the array
         }
         if (this.uppress1) {
             this.paddle_right.paddle_y -= 4;
-            
+
             if (this.paddle_right._paddle_y < 0) {
                 this.paddle_right.paddle_y = 0;
             }
         }
         if (this.downpress) {
-            
+
             this.paddle_left.paddle_y += 4;
             if (this.paddle_left.paddle_y + this.paddle_left._paddle_height > this.canvas.height) {
                 this.paddle_left.paddle_y = this.canvas.height - this.paddle_left._paddle_height;
@@ -268,7 +288,7 @@ export class Game {
             this.socket.emit('msgToServer', this.paddle_left.ToJson()); // push a mesage to the array
         }
         if (this.downpress1) {
-            
+
             this.paddle_right.paddle_y += 4;
             if (this.paddle_right._paddle_y + this.paddle_right._paddle_height > this.canvas.height) {
                 this.paddle_right.paddle_y = this.canvas.height - this.paddle_right._paddle_height;
@@ -336,7 +356,11 @@ export class Game {
 
 
     start() {
-        this.keyhook();
+        if (this.email === "hamzaelkhatri@gmail.com") 
+        {
+            this.keyhook();
+        }
+        
         this.draw();
         this._ball.ball_x += this._ball._velocity_x;
         this._ball.ball_y += this._ball._velocity_y;
@@ -350,9 +374,10 @@ export class Game {
 const Canvas = (props: any) => {
     {
         const canvasRef = useRef(null)
-
+        console.log(props.date)
         useEffect(() => {
-           new Game(canvasRef.current as any);
+            console.log(props);
+            new Game(canvasRef.current as any,props.data);
         }, []);
         return <canvas ref={canvasRef}  {...props} width={800} height={400} />
     }

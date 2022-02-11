@@ -2,11 +2,13 @@
 import React from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 // import { useRef, useEffect } from 'react'
-// import { Socket, io } from 'socket.io-client';
+import { Socket, io } from 'socket.io-client';
 import "./index.css";
 // import { Game } from './Game';
 import Canvas from './Game';
 import { useState } from 'react';
+
+
 
 type FormValues = {
   firstName: string;
@@ -24,19 +26,27 @@ export default function App() {
   const [showForm, setShowForm] = useState(true);
   const [showTtile, setTtile] = useState(true);
   const [CanvasTitle, setCanvasTitle] = useState(false);
+  const [datas, setData] =  useState({Id:"hello", Name:"hello", Email:""});    
+  let T 
 
-
-
+  //initial WebSocketServer 
+  const socket = io('http://localhost:3080');
+  
   const onSubmit: SubmitHandler<FormValues> = (data) => {
     // alert(JSON.stringify(data));
+    
+    setData({Id:data.firstName, Name:data.lastName,Email:data.email});
     setShowForm(false);
     setShowCanvas(true);
     setTtile(false);
     setCanvasTitle(true);
+    socket.emit('msgToServer', data);
   }
 
   return (
-    <div className="App">
+    
+    <div  className="App">
+      {/* <center> */}
       {showTtile
         && <h1>Ping Pong Player - Registration</h1>
       }
@@ -62,8 +72,13 @@ export default function App() {
         </form>
       }
       {/* {CanvasTitle && <h1>Ping Pong Player - Canvas</h1>} */}
-      {showCanvas && <Canvas />}
+      
 
+
+      {/* {} */}
+      {showCanvas && <Canvas data={datas.valueOf()} />}
+
+    {/* </center> */}
     </div>
 
   );
