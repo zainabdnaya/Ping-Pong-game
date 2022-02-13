@@ -1,0 +1,92 @@
+import React, { useState } from 'react'
+import {
+  useSpring,
+  useChain,
+  config,
+  animated,
+  useSpringRef,
+} from '@react-spring/web'
+
+import styles from './styles.module.css'
+import Canvas from './Game'
+import _Form from './Form'
+
+export default function App() {
+  const [open, set] = useState(false)
+
+  const springApi = useSpringRef()
+  const { size, ...rest } = useSpring({
+    ref: springApi,
+    config: config.stiff,
+    from: { size: '10%', background: 'yellow' ,},
+    to: {
+      size: open ? ('100%' ) : '10%',
+      background: open ? '#0e101c' : 'yellow',
+    },
+  })
+  const [showCanvas, setShowCanvas] = useState(false);
+
+  const transApi = useSpringRef()
+
+
+  useChain(open ? [springApi, transApi] : [transApi, springApi], [
+    0,
+    open ? 0.1 : 0.6,
+  ])
+  const [datas, setData] = useState({ Id: "hello", Name: "hello", Email: "" });
+
+  const OnClick = () => 
+  {
+    set(!open)
+    if(showCanvas === false)
+    {
+      setShowCanvas(true);
+    }
+    else
+    {
+      setShowCanvas(false);
+    }
+  }
+
+  const [showForm, setShowForm] = useState(false);
+
+  const OnClick1 = () => 
+  {
+    set(!open)
+    if(showForm === false)
+    {
+      setShowForm(true);
+    }
+    else
+    {
+      setShowForm(false);
+    }
+  }
+
+
+
+  return (
+    <div className={styles.wrapper}>
+      <animated.div
+        style={{ ...rest, width: size, height: size }}
+        className={styles.container}
+        onClick={ OnClick } >
+      {showCanvas && <Canvas data={datas.valueOf()} />}
+      </animated.div>
+      "                                              "
+      <div>
+
+      <p>
+      </p>
+
+      </div>
+      <animated.div
+        style={{ ...rest, width: size, height: size }}
+        className={styles.container}
+        onClick={ OnClick1 } >
+        { showForm && <_Form />}
+      </animated.div>
+    </div>
+    
+  );
+}

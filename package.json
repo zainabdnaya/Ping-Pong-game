@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "react-native": "^0.67.2",
+    "react-spring": "^9.4.2"
+  }
+}
