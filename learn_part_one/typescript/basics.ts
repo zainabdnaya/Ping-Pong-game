@@ -193,6 +193,7 @@ class game {
     }
 
     keyUpHandler(e: KeyboardEvent) {
+        
         if (e.key === "ArrowUp" || e.key === "Up") {
             this.uppress = false;
 
