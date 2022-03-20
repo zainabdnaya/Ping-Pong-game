@@ -31,9 +31,6 @@ class player {
     get _paddle_height() {
         return this.paddle_height;
     }
-    set _score(value) {
-        this.score += value;
-    }
 }
 class ball {
     constructor(ctx, ball_x, ball_y, ball_radius, velocity_x, velocity_y, color) {
@@ -84,9 +81,12 @@ class game {
     constructor() {
         this.canvas = document.getElementById("myCanvas");
         this.ctx = this.canvas.getContext("2d");
+        this.canvas.width = window.innerWidth * 0.8;
+        this.canvas.height = window.innerHeight * 0.5;
         this.uppress = false;
         this.downpress = false;
         this.uppress1 = false;
+        this.pause = 0;
         this.downpress1 = false;
         this.paddle_left = new player(0, 10, this.canvas.height / 2, 10, 80, 1, this.ctx, "white");
         this.paddle_right = new player(0, this.canvas.width - 20, (this.canvas.height) / 2, 10, 80, 1, this.ctx, "white");
@@ -167,7 +167,7 @@ class game {
                 this._ball._velocity_x = -this._ball._velocity_x;
             }
             else if (this._ball.ball_x + this._ball._velocity_x < this.canvas.width - this._ball.ball_radius) {
-                // this.paddle_right._score(1);
+                this.paddle_right.score++;
                 this._ball.ball_x = this.canvas.width / 2;
                 this._ball.ball_y = this.canvas.height - this.paddle_right._paddle_height;
                 this._ball._velocity_x = 2;
@@ -183,7 +183,7 @@ class game {
                 this._ball._velocity_x = -this._ball._velocity_x;
             }
             else if (this._ball.ball_x + this._ball._velocity_x < 10 - this._ball.ball_radius) {
-                // this.paddle_left._score(1);
+                this.paddle_left.score++;
                 this._ball.ball_x = this.canvas.width / 2;
                 this._ball.ball_y = this.canvas.height - this.paddle_right._paddle_height;
                 this._ball._velocity_y = -2;
@@ -198,15 +198,37 @@ class game {
         this.paddle_left.draw_padle();
         this.paddle_right.draw_padle();
         this._ball.draw_ball();
-        this.center_rec.draw_padle();
+        // this.center_rec.draw_padle();
+    }
+    draw_winner(name) {
+        this.ctx.font = "50px Arial";
+        this.ctx.fillStyle = "white";
+        this.ctx.fillText("The WINNER is " + name, this.canvas.width / 2 - this.ctx.measureText("The WINNER is " + name).width / 2, this.canvas.height / 2);
+        this.pause = 1;
+        // this.ctx.closePath();
+    }
+    show_score() {
+        this.ctx.font = "30px Arial";
+        this.ctx.fillStyle = "white";
+        this.ctx.fillText(this.paddle_left.score + '', this.canvas.width / 2 - 100, 30);
+        this.ctx.fillText(this.paddle_right.score + '', this.canvas.width / 2 + 100, 30);
     }
     start() {
-        this.keyhook();
-        this.draw();
-        // setInterval(() => {
-        this._ball.ball_x += this._ball._velocity_x;
-        this._ball.ball_y += this._ball._velocity_y;
-        this.collisionDetection();
+        if (this.pause === 0) {
+            this.keyhook();
+            this.draw();
+            // setInterval(() => {
+            this._ball.ball_x += this._ball._velocity_x;
+            this._ball.ball_y += this._ball._velocity_y;
+            this.collisionDetection();
+            this.show_score();
+            if (this.paddle_left.score === 3) {
+                this.draw_winner(" Right");
+            }
+            if (this.paddle_right.score === 3) {
+                this.draw_winner(" Left");
+            }
+        }
         requestAnimationFrame(() => this.start());
         // }, 1);
     }
