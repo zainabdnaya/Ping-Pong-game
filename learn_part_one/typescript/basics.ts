@@ -160,7 +160,7 @@ class game {
     constructor() {
         this.canvas = <HTMLCanvasElement>document.getElementById("myCanvas");
         this.ctx = this.canvas.getContext("2d") as CanvasRenderingContext2D;
-        this.canvas.width = window.innerWidth * 0.8;
+        this.canvas.width = window.innerWidth * 0.5;
         this.canvas.height = window.innerHeight * 0.5;
         this.uppress = false;
         this.downpress = false;
@@ -170,7 +170,7 @@ class game {
         this.paddle_left = new player(0, 10, this.canvas.height / 2, 10, 80, 1, this.ctx, "white");
         this.paddle_right = new player(0, this.canvas.width - 20, (this.canvas.height) / 2, 10, 80, 1, this.ctx, "white");
         this.center_rec = new player(0, this.canvas.width / 2, 0, 1, this.canvas.height, 0, this.ctx, "white");
-        this._ball = new ball(this.ctx, this.canvas.width / 2, this.canvas.height / 2, 8, 2, -2, "red");
+        this._ball = new ball(this.ctx, this.canvas.width / 2, this.canvas.height / 2, 8, 3, -3, "red");
         document.addEventListener("keyup", this.keyUpHandler.bind(this), false);
         document.addEventListener("keydown", this.keyDownHandler.bind(this), false);
         this.start();
@@ -208,6 +208,28 @@ class game {
         }
     }
 
+
+    home(event: any) {
+        const circle = new Path2D();
+        // circle.arc(150, 75, 50, 0, 2 * Math.PI);
+        // this.ctx.beginPath();
+        console.log("home");
+        circle.arc(this.canvas.width / 2, this.canvas.height / 2 + 100, 50, 0, Math.PI * 2);
+        this.ctx.fillStyle = "Black";
+
+        this.ctx.fill(circle);
+        if (this.ctx.isPointInPath(circle, event.offsetX, event.offsetY)) {
+            this.ctx.fillStyle = 'green';
+        }
+        else {
+            this.ctx.fillStyle = 'red';
+        }
+        // this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+        this.ctx.fill(circle);      
+        this.ctx.fillStyle = "white";
+        this.ctx.fillText("Home", this.canvas.width / 2 - this.ctx.measureText("Home").width / 2, this.canvas.height / 2 + 112);
+        this.ctx.beginPath();
+    }
 
     keyhook() {
 
@@ -299,12 +321,63 @@ class game {
     }
     draw_winner(name: string) {
 
-        this.ctx.font = "50px Arial";
+        this.ctx.font = "30px Arial";
         this.ctx.fillStyle = "white";
         this.ctx.fillText("The WINNER is " + name, this.canvas.width / 2 - this.ctx.measureText("The WINNER is " + name).width / 2, this.canvas.height / 2);
+
+        // this.ctx.beginPath();
+        // this.ctx.rect(this.canvas.width / 2 -100 , this.canvas.height / 2  + 100 , 100,50 );
+        // this.ctx.fillStyle = "red";
+        // this.ctx.fill();
+        // this.ctx.closePath();
+        // this.ctx.fill();
+        // this.ctx.stroke();
+
+        // var circle = this.canvas.getContext("2d") as CanvasRenderingContext2D;
+
+        // this.canvas.addEventListener("click", () => {
+        //     this.ctx.fillStyle = "green";
+        //     this.ctx.fill();
+        //     console.log("clicked");  
+        // });
+        // this.ctx.closePath();
+        this.ctx.beginPath();
+        this.ctx.arc(this.canvas.width / 2, this.canvas.height / 2 + 100, 50, 0, Math.PI * 2);
+        this.ctx.fillStyle = "grey";
+
+        this.ctx.fill();
+        this.ctx.fillStyle = "white";
+        this.ctx.fillText("Home", this.canvas.width / 2 - this.ctx.measureText("Home").width / 2, this.canvas.height / 2 + 112);
+
         this.pause = 1;
+        document.addEventListener('mousemove', this.home.bind(this), false);
+        document.addEventListener('click', this.homeClick.bind(this), false);
         // this.ctx.closePath();
     }
+
+    homeClick(e: MouseEvent) 
+    {
+        const circle = new Path2D();
+        // circle.arc(150, 75, 50, 0, 2 * Math.PI);
+        // this.ctx.beginPath();
+        circle.arc(this.canvas.width / 2, this.canvas.height / 2 + 100, 50, 0, Math.PI * 2);
+        this.ctx.fillStyle = "Black";
+        
+        this.ctx.fill(circle);
+        if (this.ctx.isPointInPath(circle, e.offsetX, e.offsetY)) {
+            console.log("home2");
+            this.ctx.fillStyle = 'green';
+        }
+        else {
+            this.ctx.fillStyle = 'red';
+        }
+        // this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+        this.ctx.fill(circle);      
+        this.ctx.fillStyle = "white";
+        this.ctx.fillText("Home", this.canvas.width / 2 - this.ctx.measureText("Home").width / 2, this.canvas.height / 2 + 112);
+        this.ctx.beginPath();
+    }
+
 
     show_score() {
         this.ctx.font = "30px Arial";
@@ -323,10 +396,10 @@ class game {
             this._ball.ball_y += this._ball._velocity_y;
             this.collisionDetection();
             this.show_score();
-            if (this.paddle_left.score === 3) {
+            if (this.paddle_left.score === 1) {
                 this.draw_winner(" Right")
             }
-            if (this.paddle_right.score === 3) {
+            if (this.paddle_right.score === 1) {
                 this.draw_winner(" Left")
             }
         }
