@@ -325,23 +325,6 @@ class game {
         this.ctx.font = "30px Arial";
         this.ctx.fillStyle = "white";
         this.ctx.fillText("The WINNER is " + name, this.canvas.width / 2 - this.ctx.measureText("The WINNER is " + name).width / 2, this.canvas.height / 2);
-
-        // this.ctx.beginPath();
-        // this.ctx.rect(this.canvas.width / 2 -100 , this.canvas.height / 2  + 100 , 100,50 );
-        // this.ctx.fillStyle = "red";
-        // this.ctx.fill();
-        // this.ctx.closePath();
-        // this.ctx.fill();
-        // this.ctx.stroke();
-
-        // var circle = this.canvas.getContext("2d") as CanvasRenderingContext2D;
-
-        // this.canvas.addEventListener("click", () => {
-        //     this.ctx.fillStyle = "green";
-        //     this.ctx.fill();
-        //     console.log("clicked");  
-        // });
-        // this.ctx.closePath();
         this.ctx.beginPath();
         this.ctx.arc(this.canvas.width / 2, this.canvas.height / 2 + 100, 50, 0, Math.PI * 2);
         this.ctx.fillStyle = "grey";
