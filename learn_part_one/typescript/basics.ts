@@ -1,3 +1,4 @@
+
 class player {
 
     score: number;
@@ -162,6 +163,7 @@ class game {
         this.ctx = this.canvas.getContext("2d") as CanvasRenderingContext2D;
         this.canvas.width = window.innerWidth * 0.5;
         this.canvas.height = window.innerHeight * 0.5;
+        console.log( this.canvas.width);
         this.uppress = false;
         this.downpress = false;
         this.uppress1 = false;
@@ -212,8 +214,6 @@ class game {
 
     home(event: any) {
         const circle = new Path2D();
-        // circle.arc(150, 75, 50, 0, 2 * Math.PI);
-        // this.ctx.beginPath();
         console.log("home");
         circle.arc(this.canvas.width / 2, this.canvas.height / 2 + 100, 50, 0, Math.PI * 2);
         this.ctx.fillStyle = "Black";
@@ -379,13 +379,13 @@ class game {
             this._ball.ball_x += this._ball._velocity_x;
             this._ball.ball_y += this._ball._velocity_y;
             this.collisionDetection();
-            this.show_score();
-            if (this.paddle_left.score === 1) {
-                this.draw_winner(" Right")
-            }
-            if (this.paddle_right.score === 1) {
-                this.draw_winner(" Left")
-            }
+            // this.show_score();
+            // if (this.paddle_left.score === 1) {
+            //     this.draw_winner(" Right")
+            // }
+            // if (this.paddle_right.score === 1) {
+            //     this.draw_winner(" Left")
+            // }
         }
         requestAnimationFrame(() => this.start());
         // }, 1);
